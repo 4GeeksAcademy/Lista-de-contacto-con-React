@@ -5,8 +5,11 @@ import ScrollToTop from "./component/scrollToTop";
 import { Home } from "./views/home";
 import { Demo } from "./views/demo";
 import { Single } from "./views/single";
+import {AddContact} from "./views/AddContact";
+import {Contact} from "./views/Contact";
 import injectContext from "./store/appContext";
 
+import { ContactCard } from "./component/ContactCard";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 
@@ -19,9 +22,12 @@ const Layout = () => {
 	return (
 		<div>
 			<BrowserRouter basename={basename}>
+				<ContactCard />
 				<ScrollToTop>
 					<Navbar />
 					<Routes>
+					    <Route path="/" element={<Contact />} />
+					    <Route path="/" element={<AddContact />} />
 						<Route path="/" element={<Home />} />
 						<Route path="/demo" element={<Demo />} />
 						<Route path="/single/:theid" element={<Single />} />

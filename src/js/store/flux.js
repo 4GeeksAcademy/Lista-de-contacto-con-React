@@ -1,7 +1,8 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
+
+			  demo: [
 				{
 					title: "FIRST",
 					background: "white",
@@ -20,9 +21,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+
+					
+					fetch('https://playground.4geeks.com/contact/docs')
+					.then().then(data => setStore({ "foo": data.bar }))
+			
 			},
 			changeColor: (index, color) => {
 				//get the store
