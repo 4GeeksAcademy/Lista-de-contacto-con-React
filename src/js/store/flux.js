@@ -1,46 +1,62 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-
-			  demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			contacts: [], // Aquí se almacenarán los contactos
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+			// Cargar los contactos desde la API
+			loadContacts: async () => {
+				try {
+					const response = await fetch('https://playground.4geeks.com/apis/fake/contact/');
+					if (!response.ok) throw new Error("Error al cargar los contactos");
+					const data = await response.json();
+					setStore({ contacts: data });
+				} catch (error) {
+					console.error(error);
+				}
 			},
-			loadSomeData: () => {
 
-					
-					fetch('https://playground.4geeks.com/contact/docs')
-					.then().then(data => setStore({ "foo": data.bar }))
-			
-			},
-			changeColor: (index, color) => {
-				//get the store
+			// Crear o actualizar un contacto
+			saveContact: async (contact, id = null) => {
 				const store = getStore();
+				const method = id ? 'PUT' : 'POST';
+				const url = id
+					? `https://playground.4geeks.com/apis/fake/contact/${id}`
+					: 'https://playground.4geeks.com/apis/fake/contact/';
+				
+				try {
+					const response = await fetch(url, {
+						method: method,
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(contact),
+					});
+					
+					if (!response.ok) throw new Error(`Error al ${id ? 'actualizar' : 'crear'} el contacto`);
+					await response.json();
+					
+					// Recargar la lista de contactos después de crear o actualizar
+					getActions().loadContacts();
+				} catch (error) {
+					console.error(error);
+				}
+			},
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			}
+			// Eliminar un contacto
+			deleteContact: async (id) => {
+				try {
+					const response = await fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`, {
+						method: 'DELETE',
+					});
+					if (!response.ok) throw new Error("Error al eliminar el contacto");
+					
+					// Recargar la lista de contactos después de eliminar
+					getActions().loadContacts();
+				} catch (error) {
+					console.error(error);
+				}
+			},
 		}
 	};
 };

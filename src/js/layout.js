@@ -6,12 +6,14 @@ import { Home } from "./views/home";
 import { Demo } from "./views/demo";
 import { Single } from "./views/single";
 import {AddContact} from "./views/AddContact";
-import {Contact} from "./views/Contact";
+import {Contact} from "./views/Contacts";
 import injectContext from "./store/appContext";
 
 import { ContactCard } from "./component/ContactCard";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+import Contacts from "./views/Contacts";
+import AddContact from "./views/AddContact";
 
 //create your first component
 const Layout = () => {
@@ -26,7 +28,7 @@ const Layout = () => {
 				<ScrollToTop>
 					<Navbar />
 					<Routes>
-					    <Route path="/" element={<Contact />} />
+					    <Route path="/" element={<Contacts />} />
 					    <Route path="/" element={<AddContact />} />
 						<Route path="/" element={<Home />} />
 						<Route path="/demo" element={<Demo />} />
